@@ -1,6 +1,7 @@
 import './loadEnv';
 import express from 'express';
 import cors from 'cors';
+import cardDefinitionsRoutes from './routes/cardDefinitions.routes';
 
 const app = express();
 
@@ -13,5 +14,9 @@ app.use(
     credentials: true
   })
 );
+
+// ROUTES
+
+app.use('/api', cardDefinitionsRoutes);
 
 export default app;
