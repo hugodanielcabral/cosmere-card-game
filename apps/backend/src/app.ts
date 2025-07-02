@@ -3,7 +3,9 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import cardDefinitionsRoutes from './routes/cardDefinitions.routes';
+import authRoutes from './routes/auth.routes';
 import { Server } from 'socket.io';
+import { errorHandler } from './middlewares/errorHandler.middleware';
 
 const app = express();
 const server = http.createServer(app);
@@ -16,12 +18,15 @@ const io = new Server(server, {
 });
 io.on('connection', (socket) => {
   socket.join('room123');
-  socket.on('chat message', (object:{ body: string, from:string }, callback) => {
-    io.to('room123').emit('chat message', object);
-    callback({
-      status: 'pong'
-    });
-  });
+  socket.on(
+    'chat message',
+    (object: { body: string; from: string }, callback) => {
+      io.to('room123').emit('chat message', object);
+      callback({
+        status: 'pong'
+      });
+    }
+  );
 });
 
 // MIDDLEWARES
@@ -35,7 +40,10 @@ app.use(
 );
 
 // ROUTES
-
 app.use('/api', cardDefinitionsRoutes);
+app.use('/api', authRoutes);
+
+// ERROR HANDLING
+app.use(errorHandler);
 
 export default server;
