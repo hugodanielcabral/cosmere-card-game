@@ -4,7 +4,8 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       DATABASE_URL: string;
-      ENV: 'test' | 'dev' | 'prod';
+      TOKEN_SECRET: string;
+      NODE_ENV: 'test' | 'dev' | 'prod';
     }
   }
 }
