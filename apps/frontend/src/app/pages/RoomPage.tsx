@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { handleCopy } from "../utils/copyToClipboard";
+import { handleCopy } from "../../utils/copyToClipboard";
 import heroWp from "../../assets/stormlight-archive-1.webp";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
