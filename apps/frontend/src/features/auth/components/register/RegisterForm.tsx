@@ -7,13 +7,7 @@ import { Fieldset } from "../../../../components/fieldset/Fieldset";
 import { useForm } from "../../../../hooks/useForm";
 import { Button } from "../../../../components/button/Button";
 import { useAuth } from "../../../../hooks/useAuth";
-
-export interface RegisterFormData {
-  username: string;
-  email: string;
-  password: string;
-  repassword: string;
-}
+import type { RegisterFormData } from "../../types/Register";
 
 const INITIAL_FORM_DATA = {
   username: "",

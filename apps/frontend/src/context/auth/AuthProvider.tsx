@@ -1,12 +1,14 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import type { IAppError } from "../../types/AppError";
-import type { RegisterFormData } from "../../features/auth/components/register/RegisterForm";
 import { AuthContext } from "./AuthContext";
+import type { RegisterFormData } from "../../features/auth/types/Register";
 
 interface AuthProviderProps {
   children: ReactNode;
 }
+
+const BASE_URL = import.meta.env.BASE_URL;
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [error, setError] = useState<IAppError | null>(null);
@@ -15,7 +17,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     values: RegisterFormData
   ): Promise<{ message: string } | null> => {
     try {
-      const response = await fetch("http://localhost:3000/api/signup", {
+      const response = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
