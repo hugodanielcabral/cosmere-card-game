@@ -1,9 +1,11 @@
 import { Outlet } from "react-router";
+import { Navbar } from "../Navbar";
 
 export const AuthLayout = () => {
   return (
-    <div className="max-h-screen flex justify-center mt-5">
+    <>
+      <Navbar />
       <Outlet />
-    </div>
+    </>
   );
 };

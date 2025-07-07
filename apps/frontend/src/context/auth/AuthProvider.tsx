@@ -8,7 +8,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const BASE_URL = import.meta.env.BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [error, setError] = useState<IAppError | null>(null);
@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     values: RegisterFormData
   ): Promise<{ message: string } | null> => {
     try {
+      console.log(BASE_URL);
       const response = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: {
