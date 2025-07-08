@@ -1,21 +1,10 @@
 import { RegisterForm } from "../components/register/RegisterForm";
-import heroWp from "../../../assets/mistborn-1.webp";
 
 export const RegisterPage = () => {
   return (
-    <div
-      className="hero bg-base-200 min-h-screen"
-      style={{
-        backgroundImage: `url(${heroWp})`,
-      }}
-    >
-      <div className="hero-content flex-col lg:flex-row-reverse">
-        <div className="card bg-base-100/60 w-full max-w-sm shrink-0">
-          <div className="card-body">
-            <RegisterForm />
-          </div>
-        </div>
-      </div>
+    <div className="hero bg-linear-to-b from-primary to-base-300 min-h-screen flex flex-col">
+      <h1 className="text-4xl text-white font-bold my-20">Cosmere Card Game</h1>
+      <RegisterForm />
     </div>
   );
 };
