@@ -37,15 +37,20 @@ export const AuthMessage = ({
     <div className="hero">
       <div className="hero-content text-center">
         <div className="max-w-md">
-          <h1 className="text-5xl font-bold text-success">{title}</h1>
-          <p className="py-6">{message}</p>
-          <p className="pb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-success">
+            {title}
+          </h1>
+          <p className="py-6 text-lg md:text-2xl text-base-content font-bold">
+            {message}
+          </p>
+          <p className="pb-2 text-base-content text-sm">
             You will be{" "}
             <span className="text-secondary font-bold">redirected</span> to the{" "}
             {pageName} page in{" "}
             <span className="font-bold text-secondary">{seconds}</span> seconds.
           </p>
-          <Link to={navigateTo} className="btn btn-primary">
+          <p className="text-base-content text-lg pb-2 font-bold">or</p>
+          <Link to={navigateTo} className="btn btn-info">
             {buttonText}
           </Link>
         </div>

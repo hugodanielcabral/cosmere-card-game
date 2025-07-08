@@ -53,7 +53,7 @@ export const RegisterForm = () => {
           <AuthMessage
             title="Welcome!"
             message="Account created successfully!"
-            countdownStart={9999}
+            countdownStart={5}
             navigateTo="/login"
             buttonText="Login now."
             pageName="login"
