@@ -41,7 +41,7 @@ export const RegisterForm = () => {
         setIsSuccess(true);
         setValues(INITIAL_FORM_DATA);
       } else {
-        notify("Registration failed.","error")
+        notify("Registration failed.", "error");
       }
     });
   };
@@ -203,7 +203,11 @@ export const RegisterForm = () => {
           <p className="validator-hint hidden">
             Must match the password exactly
           </p>
-          <Button className="btn-error w-full" type="submit" disabled={isPending}>
+          <Button
+            className="btn-primary font-bold w-full"
+            type="submit"
+            disabled={isPending}
+          >
             {isPending ? "Creating account, please wait..." : "Register"}
           </Button>
           <span className="flex gap-1">
