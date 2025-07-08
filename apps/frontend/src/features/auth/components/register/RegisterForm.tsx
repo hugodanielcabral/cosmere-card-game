@@ -7,6 +7,7 @@ import { Button } from "../../../../components/button/Button";
 import { useAuth } from "../../../../hooks/useAuth";
 import { AuthMessage } from "../message/AuthMessage";
 import { Link } from "react-router";
+import { notify } from "../../../../utils/notify";
 
 export interface RegisterFormData {
   username: string;
@@ -40,7 +41,7 @@ export const RegisterForm = () => {
         setIsSuccess(true);
         setValues(INITIAL_FORM_DATA);
       } else {
-        alert("Registration failed!");
+        notify("Registration failed.","error")
       }
     });
   };
