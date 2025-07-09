@@ -7,6 +7,8 @@ import { useAuth } from "../../../../hooks/useAuth";
 import { AuthMessage } from "../message/AuthMessage";
 import { Link } from "react-router";
 import { notify } from "../../../../utils/notify";
+import { FaUser } from "react-icons/fa";
+import { MdEmail, MdPassword } from "react-icons/md";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 export interface RegisterFormData {
@@ -51,7 +53,6 @@ export const RegisterForm = () => {
   return (
     <>
       {isSuccess ? (
-        <>
           <AuthMessage
             title="Welcome!"
             message="Account created successfully!"
@@ -60,32 +61,16 @@ export const RegisterForm = () => {
             buttonText="Login now."
             pageName="login"
           />
-        </>
       ) : (
         <Form
           className="flex flex-col justify-center items-center max-w-72 gap-4"
           onSubmit={handleSubmit(onSubmit)}
         >
           {authError && (
-            <div className="alert alert-error mb-4">{authError.message}</div>
+            <div className="alert alert-error mb-4">{authError?.message}</div>
           )}
           <Label className={errors.username ? "border-error" : ""}>
-            <svg
-              className="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </g>
-            </svg>
+            <FaUser color="#666666" />
             <Input
               type="text"
               placeholder="Username"
@@ -110,23 +95,12 @@ export const RegisterForm = () => {
           {errors?.username && (
             <p className="text-error text-sm">{errors.username.message}</p>
           )}
-          <Label className={errors.email ? "border-error" : ""}>
-            <svg
-              className="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </g>
-            </svg>
+          <Label
+            className={
+              errors.email || authError?.field === "email" ? "border-error" : ""
+            }
+          >
+            <MdEmail color="#666666"/>
             <Input
               type="email"
               placeholder="email@site.com"
@@ -145,22 +119,7 @@ export const RegisterForm = () => {
             <p className="text-error text-sm">{errors.email.message}</p>
           )}
           <Label className={errors.password ? "border-error" : ""}>
-            <svg
-              className="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </g>
-            </svg>
+            <MdPassword color="#666666" />
             <Input
               type="password"
               placeholder="Password"
@@ -188,22 +147,7 @@ export const RegisterForm = () => {
           )}
 
           <Label className={errors.repassword ? "border-error" : ""}>
-            <svg
-              className="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </g>
-            </svg>
+            <MdPassword color="#666666"/>
             <Input
               type="password"
               placeholder="Repeat password"
