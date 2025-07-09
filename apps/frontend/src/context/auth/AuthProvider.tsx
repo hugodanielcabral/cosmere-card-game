@@ -11,13 +11,12 @@ interface AuthProviderProps {
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [error, setError] = useState<IAppError | null>(null);
+  const [authError, setAuthError] = useState<IAppError | null>(null);
 
   const signup = async (
     values: RegisterFormData
   ): Promise<{ message: string } | null> => {
     try {
-      console.log(BASE_URL);
       const response = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: {
@@ -28,7 +27,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData);
+        setAuthError(errorData);
         return null;
       }
 
@@ -40,13 +39,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           error instanceof Error ? error.message : "Network error occurred",
         status: "error",
       };
-      setError(networkError);
+      setAuthError(networkError);
       return null;
     }
   };
 
   return (
-    <AuthContext.Provider value={{ signup, error, setError }}>
+    <AuthContext.Provider value={{ signup, authError, setAuthError }}>
       {children}
     </AuthContext.Provider>
   );
