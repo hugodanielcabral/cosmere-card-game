@@ -2,12 +2,12 @@ import { useState, useTransition } from "react";
 import { Form } from "../../../../components/form/Form";
 import { Input } from "../../../../components/input/Input";
 import { Label } from "../../../../components/label/Label";
-import { useForm } from "../../../../hooks/useForm";
 import { Button } from "../../../../components/button/Button";
 import { useAuth } from "../../../../hooks/useAuth";
 import { AuthMessage } from "../message/AuthMessage";
 import { Link } from "react-router";
 import { notify } from "../../../../utils/notify";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 export interface RegisterFormData {
   username: string;
@@ -24,22 +24,24 @@ const INITIAL_FORM_DATA = {
 };
 
 export const RegisterForm = () => {
-  const { values, setValues, handleChange } =
-    useForm<RegisterFormData>(INITIAL_FORM_DATA);
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    reset,
+    formState: { errors },
+  } = useForm<RegisterFormData>({ defaultValues: INITIAL_FORM_DATA });
   const [isPending, startTransition] = useTransition();
   const [isSuccess, setIsSuccess] = useState(false);
+  const { signup, authError, setAuthError } = useAuth();
 
-  const { signup, error, setError } = useAuth();
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
     startTransition(async () => {
-      setError(null);
-      const result = await signup(values);
+      setAuthError(null);
+      const result = await signup(data);
       if (result) {
         setIsSuccess(true);
-        setValues(INITIAL_FORM_DATA);
+        reset();
       } else {
         notify("Registration failed.", "error");
       }
@@ -61,13 +63,13 @@ export const RegisterForm = () => {
         </>
       ) : (
         <Form
-          className="flex flex-col justify-center items-center w-fit gap-4"
-          handleSubmit={handleSubmit}
+          className="flex flex-col justify-center items-center max-w-72 gap-4"
+          onSubmit={handleSubmit(onSubmit)}
         >
-          {error && (
-            <div className="alert alert-error mb-4">{error.message}</div>
+          {authError && (
+            <div className="alert alert-error mb-4">{authError.message}</div>
           )}
-          <Label>
+          <Label className={errors.username ? "border-error" : ""}>
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -86,23 +88,29 @@ export const RegisterForm = () => {
             </svg>
             <Input
               type="text"
-              required
               placeholder="Username"
-              pattern="[A-Za-z][A-Za-z0-9\-]*"
-              minLength={3}
-              maxLength={30}
               title="Only letters, numbers or dash"
-              name="username"
-              value={values.username}
-              onChange={handleChange}
+              {...register("username", {
+                required: "Username is required.",
+                minLength: {
+                  value: 3,
+                  message: "Username must be at least 3 characters long.",
+                },
+                maxLength: {
+                  value: 30,
+                  message: "Username cannot exceed 30 characters.",
+                },
+                pattern: {
+                  value: /^[a-zA-Z0-9-]{3,30}$/i,
+                  message: "Only letters, numbers or dash.",
+                },
+              })}
             />
           </Label>
-          <p className="validator-hint hidden">
-            Must be 3 to 30 characters
-            <br />
-            containing only letters, numbers or dash
-          </p>
-          <Label>
+          {errors?.username && (
+            <p className="text-error text-sm">{errors.username.message}</p>
+          )}
+          <Label className={errors.email ? "border-error" : ""}>
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -121,21 +129,22 @@ export const RegisterForm = () => {
             </svg>
             <Input
               type="email"
-              required
-              placeholder="Email"
-              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+              placeholder="email@site.com"
               title="Only valid email providers"
-              name="email"
-              value={values.email}
-              onChange={handleChange}
+              {...register("email", {
+                required: "Email is required.",
+                pattern: {
+                  value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/i,
+                  message:
+                    "Please enter a valid email address (must include '@' and a domain).",
+                },
+              })}
             />
           </Label>
-          <p className="validator-hint hidden">
-            Must be a valid email
-            <br />
-            using only letters, numbers and symbols like @ and .
-          </p>
-          <Label>
+          {errors?.email && (
+            <p className="text-error text-sm">{errors.email.message}</p>
+          )}
+          <Label className={errors.password ? "border-error" : ""}>
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -154,23 +163,31 @@ export const RegisterForm = () => {
             </svg>
             <Input
               type="password"
-              required
               placeholder="Password"
-              pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$"
-              minLength={6}
-              maxLength={20}
               title="Only letters, numbers or dash"
-              name="password"
-              value={values.password}
-              onChange={handleChange}
+              {...register("password", {
+                required: "Password is required.",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters long.",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "Password cannot exceed 20 characters.",
+                },
+                pattern: {
+                  value: /^(?=.*[A-Za-z])(?=.*\d).+$/i,
+                  message:
+                    "Password must contain at least one letter and one number.",
+                },
+              })}
             />
           </Label>
-          <p className="validator-hint hidden">
-            Must be 6 to 20 characters
-            <br />
-            including at least one letter and one number
-          </p>
-          <Label>
+          {errors?.password && (
+            <p className="text-error text-sm">{errors.password.message}</p>
+          )}
+
+          <Label className={errors.repassword ? "border-error" : ""}>
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -189,20 +206,28 @@ export const RegisterForm = () => {
             </svg>
             <Input
               type="password"
-              required
               placeholder="Repeat password"
-              pattern="[A-Za-z][A-Za-z0-9\-]*"
-              minLength={3}
-              maxLength={30}
               title="Only letters, numbers or dash"
-              name="repassword"
-              value={values.repassword}
-              onChange={handleChange}
+              {...register("repassword", {
+                required: "Please confirm your password.",
+                validate: {
+                  matchPassword: (value) => {
+                    const password = getValues("password");
+                    if (!password) {
+                      return "Please enter a password first.";
+                    }
+                    if (value !== password) {
+                      return "Passwords do not match.";
+                    }
+                    return true;
+                  },
+                },
+              })}
             />
           </Label>
-          <p className="validator-hint hidden">
-            Must match the password exactly
-          </p>
+          {errors?.repassword && (
+            <p className="text-error text-sm">{errors.repassword.message}</p>
+          )}
           <Button
             className="btn-primary font-bold w-full"
             type="submit"

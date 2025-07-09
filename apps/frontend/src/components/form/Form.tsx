@@ -1,12 +1,12 @@
 interface FormProps {
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   children: React.ReactNode;
   className: string;
 }
 
-export const Form = ({ className = "", handleSubmit, children }: FormProps) => {
+export const Form = ({ className = "", onSubmit, children }: FormProps) => {
   return (
-    <form className={className} onSubmit={handleSubmit}>
+    <form className={className} onSubmit={onSubmit}>
       {children}
     </form>
   );
