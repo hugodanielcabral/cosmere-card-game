@@ -17,12 +17,18 @@ export default class AuthRepository {
     return newUser[0];
   }
 
-  static async update(userData:IUser):Promise<IUser | undefined> {
-    if (!userData.user_id) throw new ValidationError('user_id is required.', 'Missing user_id parameter for update operation.');
+  static async update(userData: IUser): Promise<IUser | undefined> {
+    if (!userData.user_id)
+      throw new ValidationError(
+        'user_id is required.',
+        400,
+        'Missing user_id parameter for update operation.'
+      );
 
-    const updatedUser = await sql<IUser[]>`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE user_id = ${userData?.user_id} RETURNING *`;
+    const updatedUser = await sql<
+      IUser[]
+    >`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE user_id = ${userData?.user_id} RETURNING *`;
 
     return updatedUser[0];
-
   }
 }

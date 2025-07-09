@@ -1,8 +1,8 @@
 import { useState } from "react";
-import type { ReactNode } from "react";
-import type { IAppError } from "../../types/AppError";
 import { AuthContext } from "./AuthContext";
+import type { ReactNode } from "react";
 import type { RegisterFormData } from "../../features/auth/types/Register";
+import type { IValidationError } from "../../types/ValidationError";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -11,7 +11,7 @@ interface AuthProviderProps {
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [authError, setAuthError] = useState<IAppError | null>(null);
+  const [authError, setAuthError] = useState<IValidationError | null>(null);
 
   const signup = async (
     values: RegisterFormData
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const data = await response.json();
       return data;
     } catch (error) {
-      const networkError: IAppError = {
+      const networkError: IValidationError = {
         message:
           error instanceof Error ? error.message : "Network error occurred",
         status: "error",

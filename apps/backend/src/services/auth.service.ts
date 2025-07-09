@@ -12,6 +12,7 @@ export default class AuthService {
     if (!username || !email || !password) {
       throw new ValidationError(
         'Invalid input',
+        400,
         'All fields (username, email, password) are required.'
       );
     }
@@ -19,7 +20,12 @@ export default class AuthService {
     const userExists = await AuthRepository.findByEmail(email);
 
     if (userExists) {
-      throw new AppError('The provided email is already registered.', 409);
+      throw new ValidationError(
+        'The provided email is already registered.',
+        409,
+        '',
+        'email'
+      );
     }
 
     const hashedPassword = await encrypt(password);
@@ -35,6 +41,7 @@ export default class AuthService {
     if (!email || !password) {
       throw new ValidationError(
         'Invalid input',
+        400,
         'All fields (email, password) are required.'
       );
     }
