@@ -1,4 +1,4 @@
-export interface RegisterFormData {
+export interface ISignup {
   username: string;
   email: string;
   password: string;

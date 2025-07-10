@@ -1,9 +1,15 @@
 import { createContext } from "react";
-import type { RegisterFormData } from "../../features/auth/components/register/RegisterForm";
 import type { IValidationError } from "../../types/ValidationError";
+import type { ILoginInput } from "../../features/auth/components/login/LoginForm";
+import type { IAuthUser, ISignin } from "../../features/auth/types/Login";
+import type { ISignup } from "../../features/auth/types/Register";
 
 export interface AuthContextType {
-  signup: (values: RegisterFormData) => Promise<{ message: string } | null>;
+  signup: (values: ISignup) => Promise<{ message: string } | null>;
+  signin: (values: ILoginInput) => Promise<ISignin | null>;
+  logout: () => void;
+  user: IAuthUser | null;
+  isCheckingAuth: boolean;
   authError: IValidationError | null;
   setAuthError: (error: IValidationError | null) => void;
 }

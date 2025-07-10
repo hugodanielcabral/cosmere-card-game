@@ -10,13 +10,8 @@ import { notify } from "../../../../utils/notify";
 import { FaUser } from "react-icons/fa";
 import { MdEmail, MdPassword } from "react-icons/md";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import type { ISignup } from "../../types/Register";
 
-export interface RegisterFormData {
-  username: string;
-  email: string;
-  password: string;
-  repassword: string;
-}
 
 const INITIAL_FORM_DATA = {
   username: "",
@@ -32,12 +27,12 @@ export const RegisterForm = () => {
     getValues,
     reset,
     formState: { errors },
-  } = useForm<RegisterFormData>({ defaultValues: INITIAL_FORM_DATA });
+  } = useForm<ISignup>({ defaultValues: INITIAL_FORM_DATA });
   const [isPending, startTransition] = useTransition();
   const [isSuccess, setIsSuccess] = useState(false);
   const { signup, authError, setAuthError } = useAuth();
 
-  const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
+  const onSubmit: SubmitHandler<ISignup> = (data) => {
     startTransition(async () => {
       setAuthError(null);
       const result = await signup(data);
