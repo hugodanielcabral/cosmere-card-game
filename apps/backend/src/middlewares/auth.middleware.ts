@@ -12,6 +12,7 @@ export const verifyToken = (
   next: NextFunction
 ) => {
   const token = req.headers.cookie?.slice(6); // slice the "token="
+  console.log(token);
   if (!token) {
     throw new AppError('Access denied. Invalid Token.', 401);
   }

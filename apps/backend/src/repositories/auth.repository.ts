@@ -8,6 +8,15 @@ export default class AuthRepository {
 
     return user[0];
   }
+
+  static async findById(user_id: number): Promise<IUser | undefined> {
+    const user = await sql<
+      IUser[]
+    >`SELECT * FROM users WHERE user_id = ${user_id}`;
+
+    return user[0];
+  }
+
   static async create(userData: IUser): Promise<IUser | undefined> {
     const { username, email, password } = userData;
     const newUser = await sql<

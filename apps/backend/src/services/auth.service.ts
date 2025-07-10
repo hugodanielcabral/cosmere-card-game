@@ -70,4 +70,18 @@ export default class AuthService {
       token
     };
   }
+
+  static async profile(user: { id:number } | undefined) {
+    if (!user) {
+      throw new AppError('Invalid credentials.', 400);
+    }
+
+    const userExists = await AuthRepository.findById(user.id);
+
+    if (!userExists) {
+      throw new AppError('Invalid credentials.', 400);
+    }
+
+    return userExists;
+  }
 }

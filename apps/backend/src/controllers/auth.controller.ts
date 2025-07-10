@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import AuthService from '../services/auth.service';
 
-export const signup = async(req: Request, res: Response, next: NextFunction) => {
+export const signup = async(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const user = await AuthService.signup(req.body);
 
@@ -14,7 +18,11 @@ export const signup = async(req: Request, res: Response, next: NextFunction) => 
   }
 };
 
-export const signin = async(req: Request, res:Response, next:NextFunction) => {
+export const signin = async(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const user = await AuthService.signin(req.body);
 
@@ -30,7 +38,11 @@ export const signin = async(req: Request, res:Response, next:NextFunction) => {
   }
 };
 
-export const signout = async(_: Request, res:Response, next:NextFunction) => {
+export const signout = async(
+  _: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     res.clearCookie('token', {
       httpOnly: true,
@@ -41,6 +53,19 @@ export const signout = async(_: Request, res:Response, next:NextFunction) => {
     res.status(200).json({
       message: 'Signout successful'
     });
+  } catch(error) {
+    next(error);
+  }
+};
+
+export const profile = async(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await AuthService.profile(req.user);
+    res.status(200).json({ user_id: user.user_id, username: user.username });
   } catch(error) {
     next(error);
   }
