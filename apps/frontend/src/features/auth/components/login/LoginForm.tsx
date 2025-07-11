@@ -32,29 +32,29 @@ export const LoginForm = () => {
   const { signin, authError, setAuthError } = useAuth(); // server errors
 
   const onSubmit: SubmitHandler<ILoginInput> = (data) => {
-      startTransition(async () => {
-        setAuthError(null);
-        const result = await signin(data);
-        if (result) {
-          setIsSuccess(true);
-          reset();
-        } else {
-          notify("Login failed.", "error");
-        }
-      });
-    };
+    startTransition(async () => {
+      setAuthError(null);
+      const result = await signin(data);
+      if (result) {
+        setIsSuccess(true);
+        reset();
+      } else {
+        notify("Login failed.", "error");
+      }
+    });
+  };
 
   return (
     <>
       {isSuccess ? (
-          <AuthMessage
-            title="Welcome back!"
-            message="Logged in successfully!!"
-            countdownStart={5}
-            navigateTo="/"
-            buttonText="Go home now."
-            pageName="home"
-          />
+        <AuthMessage
+          title="Welcome back!"
+          message="Logged in successfully!!"
+          countdownStart={5}
+          navigateTo="/"
+          buttonText="Go home now."
+          pageName="home"
+        />
       ) : (
         <Form
           className="flex flex-col justify-center items-center max-w-72 gap-4"
@@ -63,12 +63,8 @@ export const LoginForm = () => {
           {authError && (
             <div className="alert alert-error mb-4">{authError?.message}</div>
           )}
-          <Label
-            className={
-              errors.email || authError ? "border-error" : ""
-            }
-          >
-            <MdEmail color="#666666"/>
+          <Label className={errors.email || authError ? "border-error" : ""}>
+            <MdEmail color="#666666" />
             <Input
               type="email"
               placeholder="email@site.com"
@@ -102,11 +98,6 @@ export const LoginForm = () => {
                   value: 20,
                   message: "Password cannot exceed 20 characters.",
                 },
-                pattern: {
-                  value: /^(?=.*[A-Za-z])(?=.*\d).+$/i,
-                  message:
-                    "Password must contain at least one letter and one number.",
-                },
               })}
             />
           </Label>
@@ -130,5 +121,5 @@ export const LoginForm = () => {
         </Form>
       )}
     </>
-  );;
+  );
 };
